@@ -1,9 +1,67 @@
-# mnas-dict
-### _Your Name <your.name@example.com>_
+#+options: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+options: author:t broken-links:nil c:nil creator:nil
+#+options: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:t
+#+options: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+options: timestamp:t title:t toc:t todo:t |:t
+#+title: mnas-dict
+#+date: <2023-07-25 Вт>
+#+author:
+#+email: namatv@N142013
+#+language: ru
+#+select_tags: export
+#+exclude_tags: noexport
+#+creator: Emacs 28.2 (Org mode 9.5.5)
+#+cite_export:
+#+options: html-link-use-abs-url:nil html-postamble:auto
+#+options: html-preamble:t html-scripts:nil html-style:t
+#+options: html5-fancy:nil tex:t
+#+html_doctype: xhtml-strict
+#+html_container: div
+#+html_content_class: content
+#+description:
+#+keywords:
+#+html_link_home:
+#+html_link_up:
+#+html_mathjax:
+#+html_equation_reference_format: \eqref{%s}
+#+html_head:
+#+html_head_extra:
+#+subtitle:
+#+infojs_opt:
+#+creator: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)
+#+latex_header:
 
-This is a project to do ... something.
 
-## License
+* Mnas-Dict
+Определяет словарь и базовые операции над ним
+** Классы: 
+ 1. <language> - класс языка;
+ 2. <dictionary> - класс словаря;
+** Операции:
+ 1. serialize - сохранение в файл;
+ 2. deserialize - восстановление из файла;
+ 3. add - добавление записей в словарь;
+ 4. populate - добавление записей в словарь из списка;
+ 5. clear - очистка словаря;
+ 6. subtract - получение разности двух словарей;
+ 7. write-key-single - вывод оригиналов в файл в одиночном формате
+ 8. write-val-single - вывод переводов в файл в одиночном формате
+ 9. write-key-triple - вывод оригиналов в файл в тройном формате
+ 10. write-val-triple - вывод переводов в файл в тройном формате
+ 11. translate - перевод;
+ 12. select-in-or - выборка по регулярному выражению на оригиналах
+ 13. select-in-tr - выборка по регулярному выражению на переводах
+ 14. add-by-tag
+ 15. add-by-tags
+** Аксессоры класса <language>
+1. <language>-key
+** Аксессоры класса <dictionary>
+1. <dictionary>-uri        ; Расположение сериализации словаря
+2. <dictionary>-from       ; Язык оригинала
+3. <dictionary>-to         ; Язык перевода
+4. <dictionary>-ht         ; Хеш-таблица 
+** Объект словаря
+1.  =*en-ru*= - словарь его место в системе ansys-doc/clog
 
-Specify license here
+
 

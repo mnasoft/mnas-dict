@@ -134,6 +134,27 @@
        tags)
   dictionary)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmethod select-in-or (regexp (dictionary <dictionary>))
+  "@b(Описание:) метод @b(find-in-origin) возвращает список, состоящий
+из пар оригинал - перевод, оригиналы которых, соответствуют
+регулярному выражению @b(regexp)."
+  (loop :for k :being :the hash-keys
+          :in (mnas-dict:<dictionary>-ht dictionary)
+            :using (hash-value v)
+        :when (ppcre:scan regexp k)
+          :collect (list k v)))
+
+(defmethod select-in-tr (regexp (dictionary <dictionary>))
+  "@b(Описание:) метод @b(find-in-origin) возвращает список, состоящий
+из пар оригинал - перевод, переводы которых, соответствуют регулярному
+выражению @b(regexp)."
+  (loop :for k :being :the hash-keys
+          :in (mnas-dict:<dictionary>-ht dictionary)
+            :using (hash-value v)
+        :when (ppcre:scan regexp v)
+          :collect (list k v)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
