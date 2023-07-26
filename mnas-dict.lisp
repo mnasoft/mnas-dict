@@ -33,6 +33,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod serialize ((dictionary <dictionary>))
+  "Сохранение словаря в файл."
   (with-open-file (stream (<dictionary>-uri dictionary)
                           :direction :output
                           :if-exists :supersede
@@ -40,6 +41,7 @@
     (hu.dwim.serializer:serialize dictionary :output stream)))
 
 (defmethod deserialize ((dictionary <dictionary>))
+  "Восстановление словаря из файла"
   (when (probe-file (<dictionary>-uri dictionary))
     (with-open-file (stream (<dictionary>-uri dictionary)
                             :direction :input
@@ -57,6 +59,7 @@
 
 
 (defmethod add ((original string) (translation string) (dictionary <dictionary>))
+  "Добавление записи в словарь."
   (setf (gethash original (<dictionary>-ht dictionary)) translation)
   dictionary)
 
@@ -76,39 +79,47 @@
         :do (add  or tr dictionary))
   dictionary)
 
-(defmethod populate (original-translation-lst (dictionary <dictionary>) )
+(defmethod populate (original-translation-lst (dictionary <dictionary>))
+  "Добавление записей в словарь из списка."
   (loop :for (original translation) :in original-translation-lst
         :do (add  original translation dictionary))
   dictionary)
 
 (defmethod clear ((dictionary <dictionary>))
+  "Очистка словаря"
   (clrhash (<dictionary>-ht dictionary))
   dictionary)
 
 (defmethod subtract ((minuend <dictionary>) (subtrahend <dictionary>))
+  "Разность словарей по оригиналу"
   (loop :for k :being :the hash-keys :in (<dictionary>-ht subtrahend)
         :do (remhash k (<dictionary>-ht minuend)))
   minuend)
 
 (defmethod write-key-single ((dictionary <dictionary>) &optional (stream t))
+  "Вывод оригиналов в файл в одиночном формате"
   (loop :for k :being :the hash-keys :in (<dictionary>-ht dictionary)
         :do (format stream "~A~%" k)))
 
 (defmethod write-val-single ((dictionary <dictionary>) &optional (stream t))
+  "Вывод переводов в файл в одиночном формате"
   (loop :for k :being :the hash-keys :in (<dictionary>-ht dictionary) :using (hash-value v) 
         :do (format stream "~A~%" v)))
 
 (defmethod write-key-triple ((dictionary <dictionary>) &optional (stream t))
+  "Вывод оригиналов в файл в тройном формате"
   (loop :for k :being :the hash-keys :in (<dictionary>-ht dictionary)
         :for i :from 1
         :do (format stream "<<<<<< ~8D~%~A~%>>>>>>~%" i k)))
 
 (defmethod write-val-triple ((dictionary <dictionary>) &optional (stream t))
+  "Вывод переводов в файл в тройном формате"
   (loop :for k :being :the hash-keys :in (<dictionary>-ht dictionary) :using (hash-value v)
         :for i :from 1
         :do (format stream "<<<<<< ~8D~%~A~%>>>>>>~%" i v)))
 
 (defmethod translate ((oriniginal string) (dictionary <dictionary>))
+  "Перевод"
   (multiple-value-bind (translation exists)
       (gethash oriniginal (<dictionary>-ht dictionary))
     (if exists
